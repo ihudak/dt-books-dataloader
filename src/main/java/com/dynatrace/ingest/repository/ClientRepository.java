@@ -1,6 +1,8 @@
 package com.dynatrace.ingest.repository;
 
 import com.dynatrace.ingest.model.Client;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -11,6 +13,7 @@ public class ClientRepository implements IngestRepository {
     @Value("${http.service.clients}")
     private String baseURL;
     private final RestTemplate restTemplate;
+    Logger logger = LoggerFactory.getLogger(ClientRepository.class);
     public String getBaseURL() {
         return baseURL;
     }
@@ -32,7 +35,9 @@ public class ClientRepository implements IngestRepository {
     public void create(@Nullable Object client) {
         try {
             restTemplate.postForObject(baseURL, client == null ? Client.generate() : client, Client.class);
-        } catch (Exception ignore){}
+        } catch (Exception exception){
+            logger.debug(exception.getMessage());
+        }
     }
 
     @Override

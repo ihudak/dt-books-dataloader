@@ -2,6 +2,8 @@ package com.dynatrace.ingest.repository;
 
 import com.dynatrace.ingest.exception.BadRequestException;
 import com.dynatrace.ingest.model.Storage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -19,6 +21,7 @@ public class StorageRepository implements IngestRepository {
     public RestTemplate getRestTemplate() {
         return restTemplate;
     }
+    Logger logger = LoggerFactory.getLogger(StorageRepository.class);
     public StorageRepository() {
         restTemplate = new RestTemplate();
     }
@@ -55,7 +58,9 @@ public class StorageRepository implements IngestRepository {
     public void create(@Nullable Object bookInStorage) {
         try {
             restTemplate.postForObject(baseURL, bookInStorage == null ? Storage.generate() : bookInStorage, Storage.class);
-        } catch (Exception ignore){}
+        } catch (Exception exception){
+            logger.debug(exception.getMessage());
+        }
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.dynatrace.ingest.repository;
 
 import com.dynatrace.ingest.model.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -11,6 +13,7 @@ public class OrderRepository implements IngestRepository {
     @Value("${http.service.orders}")
     private String baseURL;
     private final RestTemplate restTemplate;
+    Logger logger = LoggerFactory.getLogger(OrderRepository.class);
     public String getBaseURL() {
         return baseURL;
     }
@@ -30,7 +33,9 @@ public class OrderRepository implements IngestRepository {
     public void create(@Nullable Object order) {
         try {
             restTemplate.postForObject(baseURL, order == null ? Order.generate() : order, Order.class);
-        } catch (Exception ignore){}
+        } catch (Exception exception){
+            logger.debug(exception.getMessage());
+        }
     }
 
     @Override
@@ -50,7 +55,9 @@ public class OrderRepository implements IngestRepository {
         String urlBuilder = baseURL + (order.isCompleted() ? "/cancel" : "/submit");
         try {
             restTemplate.postForObject(urlBuilder, order, Order.class);
-        } catch (Exception ignore){}
+        } catch (Exception exception){
+            logger.debug(exception.getMessage());
+        }
     }
     @Override
     public void clearModel() {

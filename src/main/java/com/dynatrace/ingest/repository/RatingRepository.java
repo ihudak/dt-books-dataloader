@@ -1,6 +1,8 @@
 package com.dynatrace.ingest.repository;
 
 import com.dynatrace.ingest.model.Rating;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -10,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 public class RatingRepository implements IngestRepository {
     @Value("${http.service.ratings}")
     private String baseURL;
+    Logger logger = LoggerFactory.getLogger(RatingRepository.class);
     private final RestTemplate restTemplate;
     public String getBaseURL() {
         return baseURL;
@@ -31,7 +34,9 @@ public class RatingRepository implements IngestRepository {
     public void create(@Nullable Object rating) {
         try {
             restTemplate.postForObject(baseURL, rating == null ? Rating.generate() : rating, Rating.class);
-        } catch (Exception ignore){}
+        } catch (Exception exception){
+            logger.debug(exception.getMessage());
+        }
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.dynatrace.ingest.repository;
 
 import com.dynatrace.ingest.model.Cart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -11,6 +13,7 @@ public class CartRepository implements IngestRepository {
     @Value("${http.service.cart}")
     private String baseURL;
     private final RestTemplate restTemplate;
+    Logger logger = LoggerFactory.getLogger(CartRepository.class);
     public String getBaseURL() {
         return baseURL;
     }
@@ -30,7 +33,9 @@ public class CartRepository implements IngestRepository {
     public void create(@Nullable Object cart) {
         try {
             restTemplate.postForObject(baseURL, cart == null ? Cart.generate() : cart, Cart.class);
-        } catch (Exception ignore){}
+        } catch (Exception exception){
+            logger.debug(exception.getMessage());
+        }
     }
 
     @Override
