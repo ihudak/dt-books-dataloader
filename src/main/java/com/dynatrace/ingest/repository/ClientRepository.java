@@ -32,7 +32,7 @@ public class ClientRepository implements IngestRepository {
         try {
             return restTemplate.getForObject(baseURL, Client[].class);
         } catch (RestClientException exception) {
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
             throw exception;
         }
     }
@@ -45,7 +45,7 @@ public class ClientRepository implements IngestRepository {
             Object client1 = restTemplate.postForObject(baseURL, client == null ? Client.generate() : client, Client.class);
             logger.info(client1.toString());
         } catch (Exception exception) {
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
         }
     }
 

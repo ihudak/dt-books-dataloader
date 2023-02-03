@@ -31,7 +31,7 @@ public class RatingRepository implements IngestRepository {
         try {
             return restTemplate.getForObject(baseURL, Rating[].class);
         } catch (RestClientException exception) {
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
             throw exception;
         }
     }
@@ -43,7 +43,7 @@ public class RatingRepository implements IngestRepository {
             logger.info(baseURL);
             restTemplate.postForObject(baseURL, rating == null ? Rating.generate() : rating, Rating.class);
         } catch (Exception exception){
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
         }
     }
 

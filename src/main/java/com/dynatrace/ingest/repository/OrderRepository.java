@@ -30,7 +30,7 @@ public class OrderRepository implements IngestRepository {
         try {
             return restTemplate.getForObject(baseURL, Order[].class);
         } catch (RestClientException exception) {
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
             throw exception;
         }
     }
@@ -42,7 +42,7 @@ public class OrderRepository implements IngestRepository {
             logger.info(baseURL);
             restTemplate.postForObject(baseURL, order == null ? Order.generate() : order, Order.class);
         } catch (Exception exception){
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
         }
     }
 
@@ -66,7 +66,7 @@ public class OrderRepository implements IngestRepository {
             logger.info(urlBuilder);
             restTemplate.postForObject(urlBuilder, order, Order.class);
         } catch (Exception exception){
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
         }
     }
     @Override

@@ -36,12 +36,12 @@ public class StorageRepository implements IngestRepository {
         try {
             storageNew = restTemplate.postForObject(urlBuilder, storage, Storage.class);
         } catch (RestClientException restClientException) {
-            logger.debug(restClientException.getMessage());
+            logger.error(restClientException.getMessage());
             throw restClientException;
         }
         if (storageNew == null || storageNew.getQuantity() < 0) {
             BadRequestException ex = new BadRequestException("Purchase was rejected, ISBN: " + storage.getIsbn());
-            logger.debug(ex.getMessage());
+            logger.error(ex.getMessage());
             throw ex;
         }
         return storageNew;
@@ -55,12 +55,12 @@ public class StorageRepository implements IngestRepository {
         try {
             storageNew = restTemplate.postForObject(urlBuilder, storage, Storage.class);
         } catch (RestClientException restClientException) {
-            logger.debug(restClientException.getMessage());
+            logger.error(restClientException.getMessage());
             throw restClientException;
         }
         if (storageNew == null || storageNew.getQuantity() < 0) {
             BadRequestException ex = new BadRequestException("Return was rejected, ISBN: " + storage.getIsbn());
-            logger.debug(ex.getMessage());
+            logger.error(ex.getMessage());
             throw ex;
         }
         return storageNew;
@@ -71,7 +71,7 @@ public class StorageRepository implements IngestRepository {
         try {
             return restTemplate.getForObject(baseURL, Storage[].class);
         } catch (RestClientException exception) {
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
             throw exception;
         }
     }
@@ -83,7 +83,7 @@ public class StorageRepository implements IngestRepository {
             logger.info(baseURL);
             restTemplate.postForObject(baseURL, bookInStorage == null ? Storage.generate() : bookInStorage, Storage.class);
         } catch (Exception exception){
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
         }
     }
 

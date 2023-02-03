@@ -31,7 +31,7 @@ public class BookRepository implements IngestRepository {
         try {
             return restTemplate.getForObject(baseURL, Book[].class);
         } catch (RestClientException exception) {
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
             throw exception;
         }
     }
@@ -43,7 +43,7 @@ public class BookRepository implements IngestRepository {
             logger.info(baseURL);
             restTemplate.postForObject(baseURL, book == null ? Book.generate() : book, Book.class);
         } catch (Exception exception){
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class BookRepository implements IngestRepository {
             logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(vend, price), Book.class);
         } catch (Exception exception){
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
         }
     }
 
@@ -63,7 +63,7 @@ public class BookRepository implements IngestRepository {
             logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(price), Book.class);
         } catch (Exception exception){
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
         }
     }
 
@@ -73,7 +73,7 @@ public class BookRepository implements IngestRepository {
             logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(vend), Book.class);
         } catch (Exception exception){
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ public class BookRepository implements IngestRepository {
             logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(), Book.class);
         } catch (Exception exception){
-            logger.debug(exception.getMessage());
+            logger.error(exception.getMessage());
         }
     }
 
