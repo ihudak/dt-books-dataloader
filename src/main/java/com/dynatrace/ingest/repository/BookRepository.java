@@ -40,6 +40,7 @@ public class BookRepository implements IngestRepository {
     public void create(@Nullable Object book) {
         try {
             logger.info("Creating Books");
+            logger.info(baseURL);
             restTemplate.postForObject(baseURL, book == null ? Book.generate() : book, Book.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
@@ -49,6 +50,7 @@ public class BookRepository implements IngestRepository {
     public void create(boolean vend, double price) {
         try {
             logger.info("Creating Books");
+            logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(vend, price), Book.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
@@ -58,6 +60,7 @@ public class BookRepository implements IngestRepository {
     public void create(double price) {
         try {
             logger.info("Creating Books");
+            logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(price), Book.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
@@ -67,6 +70,7 @@ public class BookRepository implements IngestRepository {
     public void create(boolean vend) {
         try {
             logger.info("Creating Books");
+            logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(vend), Book.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
@@ -77,6 +81,7 @@ public class BookRepository implements IngestRepository {
     public void create() {
         try {
             logger.info("Creating Books");
+            logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(), Book.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());

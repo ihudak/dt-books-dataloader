@@ -39,6 +39,7 @@ public class OrderRepository implements IngestRepository {
     public void create(@Nullable Object order) {
         try {
             logger.info("Creating Order");
+            logger.info(baseURL);
             restTemplate.postForObject(baseURL, order == null ? Order.generate() : order, Order.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
@@ -62,6 +63,7 @@ public class OrderRepository implements IngestRepository {
         String urlBuilder = baseURL + (order.isCompleted() ? "/cancel" : "/submit");
         try {
             logger.info("Updating Order");
+            logger.info(urlBuilder);
             restTemplate.postForObject(urlBuilder, order, Order.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());

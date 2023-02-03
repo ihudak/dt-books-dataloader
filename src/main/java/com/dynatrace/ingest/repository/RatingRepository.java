@@ -40,6 +40,7 @@ public class RatingRepository implements IngestRepository {
     public void create(@Nullable Object rating) {
         try {
             logger.info("Creating rating");
+            logger.info(baseURL);
             restTemplate.postForObject(baseURL, rating == null ? Rating.generate() : rating, Rating.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());

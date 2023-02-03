@@ -80,6 +80,7 @@ public class StorageRepository implements IngestRepository {
     public void create(@Nullable Object bookInStorage) {
         try {
             logger.info("Creating Storage Item");
+            logger.info(baseURL);
             restTemplate.postForObject(baseURL, bookInStorage == null ? Storage.generate() : bookInStorage, Storage.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
