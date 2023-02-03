@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Repository
@@ -26,12 +27,18 @@ public class OrderRepository implements IngestRepository {
 
     @Override
     public Order[] getAll() {
-        return restTemplate.getForObject(baseURL, Order[].class);
+        try {
+            return restTemplate.getForObject(baseURL, Order[].class);
+        } catch (RestClientException exception) {
+            logger.debug(exception.getMessage());
+            throw exception;
+        }
     }
 
     @Override
     public void create(@Nullable Object order) {
         try {
+            logger.info("Creating Order");
             restTemplate.postForObject(baseURL, order == null ? Order.generate() : order, Order.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
@@ -54,6 +61,7 @@ public class OrderRepository implements IngestRepository {
         }
         String urlBuilder = baseURL + (order.isCompleted() ? "/cancel" : "/submit");
         try {
+            logger.info("Updating Order");
             restTemplate.postForObject(urlBuilder, order, Order.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());

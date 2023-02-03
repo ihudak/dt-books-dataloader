@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Repository
@@ -27,12 +28,18 @@ public class RatingRepository implements IngestRepository {
 
     @Override
     public Rating[] getAll() {
-        return restTemplate.getForObject(baseURL, Rating[].class);
+        try {
+            return restTemplate.getForObject(baseURL, Rating[].class);
+        } catch (RestClientException exception) {
+            logger.debug(exception.getMessage());
+            throw exception;
+        }
     }
 
     @Override
     public void create(@Nullable Object rating) {
         try {
+            logger.info("Creating rating");
             restTemplate.postForObject(baseURL, rating == null ? Rating.generate() : rating, Rating.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());

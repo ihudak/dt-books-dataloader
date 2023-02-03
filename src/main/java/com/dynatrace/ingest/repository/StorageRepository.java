@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Repository
@@ -31,9 +32,17 @@ public class StorageRepository implements IngestRepository {
     public Storage buyBook(@NonNull Storage storage) {
         String urlBuilder = baseURL +
                 "/sell-book";
-        Storage storageNew = restTemplate.postForObject(urlBuilder, storage, Storage.class);
+        Storage storageNew;
+        try {
+            storageNew = restTemplate.postForObject(urlBuilder, storage, Storage.class);
+        } catch (RestClientException restClientException) {
+            logger.debug(restClientException.getMessage());
+            throw restClientException;
+        }
         if (storageNew == null || storageNew.getQuantity() < 0) {
-            throw new BadRequestException("Purchase was rejected, ISBN: " + storage.getIsbn());
+            BadRequestException ex = new BadRequestException("Purchase was rejected, ISBN: " + storage.getIsbn());
+            logger.debug(ex.getMessage());
+            throw ex;
         }
         return storageNew;
     }
@@ -42,21 +51,35 @@ public class StorageRepository implements IngestRepository {
         String urlBuilder = baseURL +
                 "/ingest-book";
 
-        Storage storageNew = restTemplate.postForObject(urlBuilder, storage, Storage.class);
+        Storage storageNew;
+        try {
+            storageNew = restTemplate.postForObject(urlBuilder, storage, Storage.class);
+        } catch (RestClientException restClientException) {
+            logger.debug(restClientException.getMessage());
+            throw restClientException;
+        }
         if (storageNew == null || storageNew.getQuantity() < 0) {
-            throw new BadRequestException("Return was rejected, ISBN: " + storage.getIsbn());
+            BadRequestException ex = new BadRequestException("Return was rejected, ISBN: " + storage.getIsbn());
+            logger.debug(ex.getMessage());
+            throw ex;
         }
         return storageNew;
     }
 
     @Override
     public Storage[] getAll() {
-        return restTemplate.getForObject(baseURL, Storage[].class);
+        try {
+            return restTemplate.getForObject(baseURL, Storage[].class);
+        } catch (RestClientException exception) {
+            logger.debug(exception.getMessage());
+            throw exception;
+        }
     }
 
     @Override
     public void create(@Nullable Object bookInStorage) {
         try {
+            logger.info("Creating Storage Item");
             restTemplate.postForObject(baseURL, bookInStorage == null ? Storage.generate() : bookInStorage, Storage.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());

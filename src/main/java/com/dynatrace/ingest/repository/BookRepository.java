@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Repository
@@ -27,12 +28,18 @@ public class BookRepository implements IngestRepository {
 
     @Override
     public Book[] getAll() {
-        return restTemplate.getForObject(baseURL, Book[].class);
+        try {
+            return restTemplate.getForObject(baseURL, Book[].class);
+        } catch (RestClientException exception) {
+            logger.debug(exception.getMessage());
+            throw exception;
+        }
     }
 
     @Override
     public void create(@Nullable Object book) {
         try {
+            logger.info("Creating Books");
             restTemplate.postForObject(baseURL, book == null ? Book.generate() : book, Book.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
@@ -41,6 +48,7 @@ public class BookRepository implements IngestRepository {
 
     public void create(boolean vend, double price) {
         try {
+            logger.info("Creating Books");
             restTemplate.postForObject(baseURL, Book.generate(vend, price), Book.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
@@ -49,6 +57,7 @@ public class BookRepository implements IngestRepository {
 
     public void create(double price) {
         try {
+            logger.info("Creating Books");
             restTemplate.postForObject(baseURL, Book.generate(price), Book.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
@@ -57,6 +66,7 @@ public class BookRepository implements IngestRepository {
 
     public void create(boolean vend) {
         try {
+            logger.info("Creating Books");
             restTemplate.postForObject(baseURL, Book.generate(vend), Book.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
@@ -66,6 +76,7 @@ public class BookRepository implements IngestRepository {
     @Override
     public void create() {
         try {
+            logger.info("Creating Books");
             restTemplate.postForObject(baseURL, Book.generate(), Book.class);
         } catch (Exception exception){
             logger.debug(exception.getMessage());
