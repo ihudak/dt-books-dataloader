@@ -39,7 +39,7 @@ public class ClientRepository implements IngestRepository {
 
     @Override
     public void create(@Nullable Object client) {
-        logger.info("Calling Clients Service");
+        logger.info("Creating Clients");
         logger.info(baseURL);
         try {
             Object client1 = restTemplate.postForObject(baseURL, client == null ? Client.generate() : client, Client.class);
