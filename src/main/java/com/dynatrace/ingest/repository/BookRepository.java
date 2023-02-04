@@ -28,6 +28,7 @@ public class BookRepository implements IngestRepository {
 
     @Override
     public Book[] getAll() {
+        logger.info("Getting all books");
         try {
             return restTemplate.getForObject(baseURL, Book[].class);
         } catch (RestClientException exception) {
@@ -38,9 +39,9 @@ public class BookRepository implements IngestRepository {
 
     @Override
     public void create(@Nullable Object book) {
+        logger.info("Creating Book " + book == null ? "rand" : book.toString());
+        logger.info(baseURL);
         try {
-            logger.info("Creating Books");
-            logger.info(baseURL);
             restTemplate.postForObject(baseURL, book == null ? Book.generate() : book, Book.class);
         } catch (Exception exception){
             logger.error(exception.getMessage());

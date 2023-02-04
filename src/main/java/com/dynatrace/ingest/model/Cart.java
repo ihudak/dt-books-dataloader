@@ -61,4 +61,9 @@ public class Cart implements Model {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "Book " + this.isbn + " client " + this.email;
+    }
 }

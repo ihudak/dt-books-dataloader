@@ -50,4 +50,9 @@ public class Storage implements Model {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return this.isbn;
+    }
 }

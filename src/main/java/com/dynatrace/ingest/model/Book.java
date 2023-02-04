@@ -43,7 +43,7 @@ public class Book implements Model {
         if (Objects.equals(currentISBN, startISBN)) {
             return null;
         }
-        long isbn = random.nextLong(startISBN - currentISBN) + currentISBN - 1;
+        long isbn = random.nextLong(startISBN - currentISBN) + currentISBN;
         return Long.toString(isbn);
     }
 
@@ -118,5 +118,10 @@ public class Book implements Model {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return this.isbn;
     }
 }

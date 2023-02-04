@@ -74,4 +74,9 @@ public class Rating implements Model {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    @Override
+    public String toString() {
+        return "ISBN: " + this.isbn + " Client: " + this.email;
+    }
 }

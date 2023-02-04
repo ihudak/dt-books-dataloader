@@ -81,7 +81,9 @@ public class StorageRepository implements IngestRepository {
         try {
             logger.info("Creating Storage Item");
             logger.info(baseURL);
-            restTemplate.postForObject(baseURL, bookInStorage == null ? Storage.generate() : bookInStorage, Storage.class);
+            Object book =  bookInStorage == null ? Storage.generate() : bookInStorage;
+            logger.info(book.toString());
+            restTemplate.postForObject(baseURL, book, Storage.class);
         } catch (Exception exception){
             logger.error(exception.getMessage());
         }

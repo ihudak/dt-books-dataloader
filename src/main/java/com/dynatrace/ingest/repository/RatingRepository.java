@@ -41,7 +41,9 @@ public class RatingRepository implements IngestRepository {
         try {
             logger.info("Creating rating");
             logger.info(baseURL);
-            restTemplate.postForObject(baseURL, rating == null ? Rating.generate() : rating, Rating.class);
+            Object rating1 = rating == null ? Rating.generate() : rating;
+            logger.info(rating1.toString());
+            restTemplate.postForObject(baseURL, rating1, Rating.class);
         } catch (Exception exception){
             logger.error(exception.getMessage());
         }

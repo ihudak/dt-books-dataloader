@@ -40,7 +40,9 @@ public class CartRepository implements IngestRepository {
         try {
             logger.info("Creating Cart");
             logger.info(baseURL);
-            restTemplate.postForObject(baseURL, cart == null ? Cart.generate() : cart, Cart.class);
+            Object cart1 = cart == null ? Cart.generate() : cart;
+            logger.info(cart1.toString());
+            restTemplate.postForObject(baseURL, cart1, Cart.class);
         } catch (Exception exception){
             logger.error(exception.getMessage());
         }

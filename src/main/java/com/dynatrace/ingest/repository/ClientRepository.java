@@ -42,8 +42,10 @@ public class ClientRepository implements IngestRepository {
         logger.info("Creating Clients");
         logger.info(baseURL);
         try {
-            Object client1 = restTemplate.postForObject(baseURL, client == null ? Client.generate() : client, Client.class);
-            logger.info(client1.toString());
+            Object client0 = client == null ? Client.generate() : client;
+            logger.info(client0.toString());
+            Object client1 = restTemplate.postForObject(baseURL, client0, Client.class);
+            logger.info("Resulting Client " + client1.toString());
         } catch (Exception exception) {
             logger.error(exception.getMessage());
         }

@@ -40,7 +40,9 @@ public class OrderRepository implements IngestRepository {
         try {
             logger.info("Creating Order");
             logger.info(baseURL);
-            restTemplate.postForObject(baseURL, order == null ? Order.generate() : order, Order.class);
+            Object order1 = order == null ? Order.generate() : order;
+            logger.info(order1.toString());
+            restTemplate.postForObject(baseURL,  order1, Order.class);
         } catch (Exception exception){
             logger.error(exception.getMessage());
         }
@@ -64,6 +66,7 @@ public class OrderRepository implements IngestRepository {
         try {
             logger.info("Updating Order");
             logger.info(urlBuilder);
+            logger.info(order.toString());
             restTemplate.postForObject(urlBuilder, order, Order.class);
         } catch (Exception exception){
             logger.error(exception.getMessage());

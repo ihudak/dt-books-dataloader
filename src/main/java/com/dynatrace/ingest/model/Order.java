@@ -1,5 +1,9 @@
 package com.dynatrace.ingest.model;
 
+import com.dynatrace.ingest.controller.IngestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,6 +17,7 @@ public class Order implements Model {
     private boolean completed;
     private static final Random random = new Random();
     private static List<Order> orders = new ArrayList<>();
+    static Logger logger = LoggerFactory.getLogger(Order.class);
 
     public Order() {
     }
@@ -29,11 +34,16 @@ public class Order implements Model {
     public static Order generate() {
         String email = Client.getRandomEmail();
         String isbn = Book.getRandomISBN();
+        logger.info("GENERATING ORDER");
+        logger.info(isbn);
+        logger.info(email);
         if (email == null || isbn == null) {
+            logger.info("GENERATING ORDER FAILED");
             return null;
         }
         Order order = new Order(0, email, isbn, random.nextInt(3) + 1, 12.0, false);
         orders.add(order);
+        logger.info(order.toString());
         return order;
     }
 
@@ -95,5 +105,10 @@ public class Order implements Model {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    @Override
+    public String toString() {
+        return "ISBN: " + this.isbn + " Client: " + this.email;
     }
 }

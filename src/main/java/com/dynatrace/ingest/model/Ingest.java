@@ -148,4 +148,9 @@ public class Ingest {
     public void setRandomPrice(boolean randomPrice) {
         this.randomPrice = randomPrice;
     }
+
+    @Override
+    public String toString() {
+        return "Books " + this.numBooksNotvend + this.numBooksVend + this.numBooksRandVend + " Clients " + this.numClients;
+    }
 }
