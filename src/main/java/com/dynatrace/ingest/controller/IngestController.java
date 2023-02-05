@@ -1,5 +1,7 @@
 package com.dynatrace.ingest.controller;
 
+import com.dynatrace.ingest.model.Book;
+import com.dynatrace.ingest.model.Client;
 import com.dynatrace.ingest.model.Ingest;
 import com.dynatrace.ingest.repository.*;
 import org.slf4j.Logger;
@@ -186,7 +188,7 @@ public class IngestController {
             return;
         }
         logger.info("Clear Data");
-        clearData();
+        clearData(true);
     }
 
     private void booksGenerator(@RequestBody Ingest ingest) {
@@ -215,19 +217,22 @@ public class IngestController {
         }
     }
 
-    private void clearData() {
+    private void clearData(boolean clearBooksAndClients) {
+        logger.info("Clearing ratings");
+        ratingRepository.deleteAll();
         logger.info("Clearing orders");
         orderRepository.deleteAll();
         logger.info("Clearing carts");
         cartRepository.deleteAll();
         logger.info("Clearing storage");
         storageRepository.deleteAll();
-        logger.info("Clearing clients");
-        clientRepository.deleteAll();
-        logger.info("Clearing books");
-        bookRepository.deleteAll();
-        logger.info("Clearing ratings");
-        ratingRepository.deleteAll();
+
+        if (clearBooksAndClients) {
+            logger.info("Clearing clients");
+            clientRepository.deleteAll();
+            logger.info("Clearing books");
+            bookRepository.deleteAll();
+        }
     }
 
     @Async
@@ -247,13 +252,16 @@ public class IngestController {
             ingest.setNumStorage(ingest.getNumBooksRandVend() + ingest.getNumBooksVend() + ingest.getNumBooksNotvend());
         }
         logger.info("clearing data");
-        clearData();
+        boolean regenerateBooksAndClients = ingest.getNumBooks() > Book.getNumOfISBNs() || ingest.getNumClients() > Client.getNumOfClients();
+        clearData(regenerateBooksAndClients);
 
-        logger.info("books");
-        booksGenerator(ingest);
-        for (int i = 0; i < ingest.getNumClients(); i++) {
-            logger.info("clients");
-            clientRepository.create();
+        if (regenerateBooksAndClients) {
+            logger.info("books");
+            booksGenerator(ingest);
+            for (int i = 0; i < ingest.getNumClients(); i++) {
+                logger.info("clients");
+                clientRepository.create();
+            }
         }
         for (int i = 0; i < ingest.getNumCarts(); i++) {
             logger.info("carts");

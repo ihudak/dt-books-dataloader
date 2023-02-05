@@ -76,6 +76,8 @@ public class Ingest {
         return numBooksNotvend;
     }
 
+    public int getNumBooks() { return numBooksVend + numBooksNotvend + numBooksRandVend; }
+
     public void setNumBooksNotvend(int numBooksNotvend) {
         this.numBooksNotvend = numBooksNotvend;
     }

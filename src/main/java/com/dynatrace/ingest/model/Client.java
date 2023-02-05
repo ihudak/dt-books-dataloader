@@ -39,6 +39,10 @@ public class Client implements Model {
         return clients.get(index).getEmail();
     }
 
+    public static int getNumOfClients() {
+        return clients.size();
+    }
+
     public static void reset() {
         clients.clear();
     }

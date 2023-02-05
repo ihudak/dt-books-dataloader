@@ -2,7 +2,6 @@ package com.dynatrace.ingest.controller;
 
 import com.dynatrace.ingest.exception.BadRequestException;
 import com.dynatrace.ingest.model.Config;
-import com.dynatrace.ingest.repository.CartRepository;
 import com.dynatrace.ingest.repository.configs.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

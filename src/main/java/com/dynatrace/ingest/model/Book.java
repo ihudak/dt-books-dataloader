@@ -47,6 +47,10 @@ public class Book implements Model {
         return Long.toString(isbn);
     }
 
+    static public long getNumOfISBNs() {
+        return startISBN - currentISBN;
+    }
+
     static public void reset() {
         currentISBN = startISBN;
     }
