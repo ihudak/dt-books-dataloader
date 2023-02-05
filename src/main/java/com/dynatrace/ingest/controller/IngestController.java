@@ -2,28 +2,32 @@ package com.dynatrace.ingest.controller;
 
 import com.dynatrace.ingest.model.Ingest;
 import com.dynatrace.ingest.repository.*;
+import com.dynatrace.ingest.service.DataGenerationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/ingest")
 public class IngestController {
     @Autowired
-    BookRepository bookRepository;
+    private ClientRepository clientRepository;
     @Autowired
-    ClientRepository clientRepository;
+    private CartRepository cartRepository;
     @Autowired
-    CartRepository cartRepository;
+    private OrderRepository orderRepository;
     @Autowired
-    OrderRepository orderRepository;
+    private RatingRepository ratingRepository;
     @Autowired
-    RatingRepository ratingRepository;
+    private StorageRepository storageRepository;
     @Autowired
-    StorageRepository storageRepository;
+    private DataGenerationService dataGenerationService;
     static private boolean isWorking = false;
+
+    public static boolean isWorking() {
+        return isWorking;
+    }
 
     private final Logger logger = LoggerFactory.getLogger(IngestController.class);
 
@@ -37,11 +41,11 @@ public class IngestController {
         } else if (ingest.isContinuousLoad()) {
             IngestController.isWorking = true;
             ingest.setMessage("Generation In Loop Started");
-            this.getInLoop(ingest);
+            dataGenerationService.getInLoop(ingest);
         } else {
             IngestController.isWorking = true;
             ingest.setMessage("One-time Generation Started");
-            this.generate(ingest);
+            dataGenerationService.generate(ingest);
             IngestController.isWorking = false;
         }
 
@@ -57,7 +61,7 @@ public class IngestController {
             return ingest;
         }
         logger.info("Generate books");
-        booksGenerator(ingest);
+        dataGenerationService.booksGenerator(ingest);
         ingest.setMessage("Ok");
         return ingest;
     }
@@ -186,94 +190,6 @@ public class IngestController {
             return;
         }
         logger.info("Clear Data");
-        clearData();
-    }
-
-    private void booksGenerator(@RequestBody Ingest ingest) {
-        logger.info("Generate Books");
-        // always generate one extra book ( i <= .. in the for loops)
-        for (int i = 0; i <= ingest.getNumBooksVend(); i++) {
-            if (ingest.isRandomPrice()) {
-                bookRepository.create(true);
-            } else {
-                bookRepository.create(true, 12);
-            }
-        }
-        for (int i = 0; i <= ingest.getNumBooksNotvend(); i++) {
-            if (ingest.isRandomPrice()) {
-                bookRepository.create(false);
-            } else {
-                bookRepository.create(false, 12);
-            }
-        }
-        for (int i = 0; i <= ingest.getNumBooksRandVend(); i++) {
-            if (ingest.isRandomPrice()) {
-                bookRepository.create();
-            } else {
-                bookRepository.create(12);
-            }
-        }
-    }
-
-    private void clearData() {
-        logger.info("Clearing orders");
-        orderRepository.deleteAll();
-        logger.info("Clearing carts");
-        cartRepository.deleteAll();
-        logger.info("Clearing storage");
-        storageRepository.deleteAll();
-        logger.info("Clearing clients");
-        clientRepository.deleteAll();
-        logger.info("Clearing books");
-        bookRepository.deleteAll();
-        logger.info("Clearing ratings");
-        ratingRepository.deleteAll();
-    }
-
-    @Async
-    protected void getInLoop(Ingest ingest) {
-        if (!IngestController.isWorking) {
-            logger.info("Stopping Generator");
-            return;
-        }
-        while (IngestController.isWorking) {
-            this.generate(ingest);
-        }
-    }
-
-    private void generate(Ingest ingest) {
-        logger.info("Generate Data");
-        if (ingest.getNumBooksRandVend() + ingest.getNumBooksVend() + ingest.getNumBooksNotvend() < ingest.getNumStorage()) {
-            ingest.setNumStorage(ingest.getNumBooksRandVend() + ingest.getNumBooksVend() + ingest.getNumBooksNotvend());
-        }
-        logger.info("clearing data");
-        clearData();
-
-        logger.info("books");
-        booksGenerator(ingest);
-        for (int i = 0; i < ingest.getNumClients(); i++) {
-            logger.info("clients");
-            clientRepository.create();
-        }
-        for (int i = 0; i < ingest.getNumCarts(); i++) {
-            logger.info("carts");
-            cartRepository.create();
-        }
-        for (int i = 0; i < ingest.getNumStorage(); i++) {
-            logger.info("storage");
-            storageRepository.create();
-        }
-        for (int i = 0; i < ingest.getNumOrders(); i++) {
-            logger.info("orders");
-            orderRepository.create();
-        }
-        for (int i = 0; i < ingest.getNumSubmitOrders(); i++) {
-            logger.info("pay orders");
-            orderRepository.update(null); // random order
-        }
-        for (int i = 0; i < ingest.getNumRatings(); i++) {
-            logger.info("ratings");
-            ratingRepository.create();
-        }
+        dataGenerationService.clearData();
     }
 }
