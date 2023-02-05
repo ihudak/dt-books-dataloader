@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 public class RatingRepository implements IngestRepository {
     @Value("${http.service.ratings}")
     private String baseURL;
-    Logger logger = LoggerFactory.getLogger(RatingRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(RatingRepository.class);
     private final RestTemplate restTemplate;
     public String getBaseURL() {
         return baseURL;

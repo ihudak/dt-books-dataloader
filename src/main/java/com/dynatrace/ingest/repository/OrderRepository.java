@@ -14,7 +14,7 @@ public class OrderRepository implements IngestRepository {
     @Value("${http.service.orders}")
     private String baseURL;
     private final RestTemplate restTemplate;
-    Logger logger = LoggerFactory.getLogger(OrderRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(OrderRepository.class);
     public String getBaseURL() {
         return baseURL;
     }

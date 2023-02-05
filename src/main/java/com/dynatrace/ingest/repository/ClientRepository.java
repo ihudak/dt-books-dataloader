@@ -14,7 +14,7 @@ public class ClientRepository implements IngestRepository {
     @Value("${http.service.clients}")
     private String baseURL;
     private final RestTemplate restTemplate;
-    Logger logger = LoggerFactory.getLogger(ClientRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(ClientRepository.class);
     public String getBaseURL() {
         return baseURL;
     }

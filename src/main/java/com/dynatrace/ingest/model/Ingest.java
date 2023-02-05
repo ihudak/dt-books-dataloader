@@ -15,12 +15,22 @@ public class Ingest {
     private int numBooksPerStorage;
     private int numBooksPerOrder;
     private boolean randomPrice;
+    private boolean continuousLoad;
+
+    static private boolean contLoad = false;
+    public static void setContLoad(boolean contLoad) {
+        Ingest.contLoad = contLoad;
+    }
+
+    public static boolean isContLoad() {
+        return contLoad;
+    }
 
 
     public Ingest() {
     }
 
-    public Ingest(int code, String message, int numBooksVend, int numBooksNotvend, int numBooksRandVend, int numClients, int numCarts, int numOrders, int numSubmitOrders, int numRatings, int numStorage, int numBooksPerStorage, int numBooksPerOrder, boolean randomPrice) {
+    public Ingest(int code, String message, int numBooksVend, int numBooksNotvend, int numBooksRandVend, int numClients, int numCarts, int numOrders, int numSubmitOrders, int numRatings, int numStorage, int numBooksPerStorage, int numBooksPerOrder, boolean randomPrice, boolean continuousLoad) {
         this.code = code;
         this.message = message;
         this.numBooksVend = numBooksVend;
@@ -35,6 +45,7 @@ public class Ingest {
         this.numBooksPerStorage = numBooksPerStorage;
         this.numBooksPerOrder = numBooksPerOrder;
         this.randomPrice = randomPrice;
+        this.continuousLoad = continuousLoad;
     }
 
     public int getCode() {
@@ -147,6 +158,14 @@ public class Ingest {
 
     public void setRandomPrice(boolean randomPrice) {
         this.randomPrice = randomPrice;
+    }
+
+    public boolean isContinuousLoad() {
+        return continuousLoad;
+    }
+
+    public void setContinuousLoad(boolean continuousLoad) {
+        this.continuousLoad = continuousLoad;
     }
 
     @Override

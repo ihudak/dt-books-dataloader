@@ -11,10 +11,10 @@ import org.springframework.web.client.RestTemplate;
 
 @Repository
 public class CartRepository implements IngestRepository {
-    @Value("${http.service.cart}")
+    @Value("${http.service.carts}")
     private String baseURL;
     private final RestTemplate restTemplate;
-    Logger logger = LoggerFactory.getLogger(CartRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(CartRepository.class);
     public String getBaseURL() {
         return baseURL;
     }

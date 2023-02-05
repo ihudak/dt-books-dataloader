@@ -22,7 +22,7 @@ public class StorageRepository implements IngestRepository {
     public RestTemplate getRestTemplate() {
         return restTemplate;
     }
-    Logger logger = LoggerFactory.getLogger(StorageRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(StorageRepository.class);
     public StorageRepository() {
         restTemplate = new RestTemplate();
     }

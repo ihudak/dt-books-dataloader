@@ -16,8 +16,8 @@ public class Order implements Model {
     private double price;
     private boolean completed;
     private static final Random random = new Random();
-    private static List<Order> orders = new ArrayList<>();
-    static Logger logger = LoggerFactory.getLogger(Order.class);
+    private static final List<Order> orders = new ArrayList<>();
+    private final static Logger logger = LoggerFactory.getLogger(Order.class);
 
     public Order() {
     }

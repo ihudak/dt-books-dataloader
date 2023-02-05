@@ -13,7 +13,7 @@ public class BookRepository implements IngestRepository {
     @Value("${http.service.books}")
     private String baseURL;
     private final RestTemplate restTemplate;
-    Logger logger = LoggerFactory.getLogger(BookRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(BookRepository.class);
     public String getBaseURL() {
         return baseURL;
     }
