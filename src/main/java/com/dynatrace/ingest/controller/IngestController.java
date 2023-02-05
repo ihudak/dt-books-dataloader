@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/ingest")
 public class IngestController {
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
     @Autowired
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
     @Autowired
-    CartRepository cartRepository;
+    private CartRepository cartRepository;
     @Autowired
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
     @Autowired
-    RatingRepository ratingRepository;
+    private RatingRepository ratingRepository;
     @Autowired
-    StorageRepository storageRepository;
+    private StorageRepository storageRepository;
     static private boolean isWorking = false;
 
     private final Logger logger = LoggerFactory.getLogger(IngestController.class);
