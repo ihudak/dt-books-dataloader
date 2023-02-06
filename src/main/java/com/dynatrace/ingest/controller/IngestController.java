@@ -25,6 +25,10 @@ public class IngestController {
     private RatingRepository ratingRepository;
     @Autowired
     private StorageRepository storageRepository;
+    public static boolean isIsWorking() {
+        return isWorking;
+    }
+
     static private boolean isWorking = false;
 
     private final Logger logger = LoggerFactory.getLogger(IngestController.class);
@@ -53,11 +57,6 @@ public class IngestController {
     @PostMapping("/books")
     public Ingest createBooks(@RequestBody Ingest ingest) {
         ingest.setCode(200);
-        if (IngestController.isWorking) {
-            IngestController.isWorking = false;
-            ingest.setMessage("Generation Stopped");
-            return ingest;
-        }
         logger.info("Generate books");
         booksGenerator(ingest);
         ingest.setMessage("Ok");
@@ -67,11 +66,6 @@ public class IngestController {
     @PostMapping("/clients")
     public Ingest createClients(@RequestBody Ingest ingest) {
         ingest.setCode(200);
-        if (IngestController.isWorking) {
-            IngestController.isWorking = false;
-            ingest.setMessage("Generation Stopped");
-            return ingest;
-        }
         logger.info("Generate clients");
         for (int i = 0; i < ingest.getNumClients(); i++) {
             clientRepository.create();

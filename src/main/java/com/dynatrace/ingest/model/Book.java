@@ -40,7 +40,7 @@ public class Book implements Model {
     }
 
     static public String getRandomISBN() {
-        if (Objects.equals(currentISBN, startISBN)) {
+        if (currentISBN == startISBN) {
             return null;
         }
         long isbn = random.nextLong(startISBN - currentISBN) + currentISBN;

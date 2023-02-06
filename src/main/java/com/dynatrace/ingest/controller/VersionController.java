@@ -17,7 +17,7 @@ public class VersionController {
 
     @GetMapping("")
     public ResponseEntity<?> getVersion() {
-        String verStr = "{\"ver\": \"" + this.svcVer + "\", \"date\": \"" + this.svcDate + "\"}";
+        String verStr = "{\"ver\": \"" + this.svcVer + "\", \"date\": \"" + this.svcDate + "\", \"status\": \"" + (IngestController.isIsWorking() ? "generation in progress" : "generation is off") + "\"}";
         return ResponseEntity.ok().body(verStr);
     }
 }
