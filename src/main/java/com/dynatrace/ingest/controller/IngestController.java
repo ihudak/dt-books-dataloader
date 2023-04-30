@@ -182,7 +182,7 @@ public class IngestController {
             return;
         }
         logger.info("Clear Data");
-        clearData(true);
+        clearData(true, true);
     }
 
     private void booksGenerator(@RequestBody Ingest ingest) {
@@ -211,9 +211,11 @@ public class IngestController {
         }
     }
 
-    private void clearData(boolean clearBooksAndClients) {
-        logger.info("Clearing ratings");
-        ratingRepository.deleteAll();
+    private void clearData(boolean clearBooksAndClients, boolean clearRatings) {
+        if (clearRatings) {
+            logger.info("Clearing ratings");
+            ratingRepository.deleteAll();
+        }
         logger.info("Clearing orders");
         orderRepository.deleteAll();
         logger.info("Clearing carts");
@@ -247,7 +249,7 @@ public class IngestController {
         }
         logger.info("clearing data");
         boolean regenerateBooksAndClients = ingest.getNumBooks() > Book.getNumOfISBNs() || ingest.getNumClients() > Client.getNumOfClients();
-        clearData(regenerateBooksAndClients);
+        clearData(regenerateBooksAndClients, false); // let's keep ratings queriable in the GUI till the other data is being generated
 
         if (regenerateBooksAndClients) {
             logger.info("books");
@@ -273,6 +275,9 @@ public class IngestController {
             logger.info("pay orders");
             orderRepository.update(null); // random order
         }
+        // clearing ratings now
+        logger.info("Clearing ratings");
+        ratingRepository.deleteAll();
         for (int i = 0; i < ingest.getNumRatings(); i++) {
             logger.info("ratings");
             ratingRepository.create();
