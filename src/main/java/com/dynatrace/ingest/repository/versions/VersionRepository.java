@@ -15,6 +15,9 @@ public interface VersionRepository {
         try {
             Version version = getRestTemplate().getForObject(getBaseURL(), Version.class);
             version.setServiceId(getServiceName());
+            if (version.getMessage().isEmpty()) {
+                version.setMessage("Healthy");
+            }
             return version;
         } catch (Exception exception) {
             getLogger().error(exception.getMessage());
