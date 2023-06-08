@@ -6,7 +6,7 @@ import org.springframework.web.client.RestTemplate;
 
 public interface IngestRepository {
     String getBaseURL();
-    public RestTemplate getRestTemplate();
+    RestTemplate getRestTemplate();
     Model[] getAll();
     void create(@Nullable Object model);
     void create();

@@ -3,6 +3,7 @@ package com.dynatrace.ingest.repository;
 import com.dynatrace.ingest.model.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -37,9 +38,9 @@ public class OrderRepository implements IngestRepository {
 
     @Override
     public void create(@Nullable Object order) {
+        logger.info("Creating Order");
+        logger.info(baseURL);
         try {
-            logger.info("Creating Order");
-            logger.info(baseURL);
             Object order1 = order == null ? Order.generate() : order;
             logger.info(order1.toString());
             restTemplate.postForObject(baseURL,  order1, Order.class);

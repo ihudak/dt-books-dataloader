@@ -43,7 +43,7 @@ public class IngestController {
         } else if (ingest.isContinuousLoad()) {
             IngestController.isWorking = true;
             ingest.setMessage("Generation In Loop Started");
-            this.getInLoop(ingest);
+            this.generateInLoop(ingest);
         } else {
             IngestController.isWorking = true;
             ingest.setMessage("One-time Generation Started");
@@ -232,7 +232,7 @@ public class IngestController {
     }
 
     @Async
-    protected void getInLoop(Ingest ingest) {
+    protected void generateInLoop(Ingest ingest) {
         if (!IngestController.isWorking) {
             logger.info("Stopping Generator");
             return;

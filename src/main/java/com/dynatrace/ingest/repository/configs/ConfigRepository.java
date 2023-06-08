@@ -9,8 +9,8 @@ import org.springframework.web.client.RestTemplate;
 public interface ConfigRepository {
     String getBaseURL();
     String getServiceName();
-    public RestTemplate getRestTemplate();
-    public Logger getLogger();
+    RestTemplate getRestTemplate();
+    Logger getLogger();
 
     default Config getConfigByID(String id) {
         String urlBuilder = getBaseURL() + "/" + id;

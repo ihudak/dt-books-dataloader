@@ -2,8 +2,10 @@ package com.dynatrace.ingest.repository;
 
 import com.dynatrace.ingest.exception.BadRequestException;
 import com.dynatrace.ingest.model.Storage;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -78,9 +80,9 @@ public class StorageRepository implements IngestRepository {
 
     @Override
     public void create(@Nullable Object bookInStorage) {
+        logger.info("Creating Storage Item");
+        logger.info(baseURL);
         try {
-            logger.info("Creating Storage Item");
-            logger.info(baseURL);
             Object book =  bookInStorage == null ? Storage.generate() : bookInStorage;
             logger.info(book.toString());
             restTemplate.postForObject(baseURL, book, Storage.class);

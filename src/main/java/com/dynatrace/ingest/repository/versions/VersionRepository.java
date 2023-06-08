@@ -7,21 +7,21 @@ import org.springframework.web.client.RestTemplate;
 public interface VersionRepository {
     String getBaseURL();
     String getServiceName();
-    public RestTemplate getRestTemplate();
-    public Logger getLogger();
+    RestTemplate getRestTemplate();
+    Logger getLogger();
 
     default Version getVersion() {
         getLogger().info("Getting version and status for service. URL: " + getBaseURL());
         try {
             Version version = getRestTemplate().getForObject(getBaseURL(), Version.class);
             version.setServiceId(getServiceName());
-            if (version.getMessage().isEmpty()) {
+            if (version.isMessageEmpty()) {
                 version.setMessage("Healthy");
             }
             return version;
         } catch (Exception exception) {
             getLogger().error(exception.getMessage());
-            return new Version(getServiceName(), "N/A", "N/A", "N/A", exception.getMessage());
+            return new Version(getServiceName(), exception.getMessage());
         }
     }
 }

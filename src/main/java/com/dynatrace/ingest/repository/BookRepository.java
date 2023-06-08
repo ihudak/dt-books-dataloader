@@ -2,11 +2,13 @@ package com.dynatrace.ingest.repository;
 import com.dynatrace.ingest.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
 
 @Repository
 public class BookRepository implements IngestRepository {
@@ -49,9 +51,9 @@ public class BookRepository implements IngestRepository {
     }
 
     public void create(boolean vend, double price) {
+        logger.info("Creating Books");
+        logger.info(baseURL);
         try {
-            logger.info("Creating Books");
-            logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(vend, price), Book.class);
         } catch (Exception exception){
             logger.error(exception.getMessage());
@@ -59,9 +61,9 @@ public class BookRepository implements IngestRepository {
     }
 
     public void create(double price) {
+        logger.info("Creating Books");
+        logger.info(baseURL);
         try {
-            logger.info("Creating Books");
-            logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(price), Book.class);
         } catch (Exception exception){
             logger.error(exception.getMessage());
@@ -69,9 +71,9 @@ public class BookRepository implements IngestRepository {
     }
 
     public void create(boolean vend) {
+        logger.info("Creating Books");
+        logger.info(baseURL);
         try {
-            logger.info("Creating Books");
-            logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(vend), Book.class);
         } catch (Exception exception){
             logger.error(exception.getMessage());
@@ -80,9 +82,9 @@ public class BookRepository implements IngestRepository {
 
     @Override
     public void create() {
+        logger.info("Creating Books");
+        logger.info(baseURL);
         try {
-            logger.info("Creating Books");
-            logger.info(baseURL);
             restTemplate.postForObject(baseURL, Book.generate(), Book.class);
         } catch (Exception exception){
             logger.error(exception.getMessage());

@@ -3,6 +3,7 @@ package com.dynatrace.ingest.repository;
 import com.dynatrace.ingest.model.Rating;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -38,9 +39,9 @@ public class RatingRepository implements IngestRepository {
 
     @Override
     public void create(@Nullable Object rating) {
+        logger.info("Creating rating");
+        logger.info(baseURL);
         try {
-            logger.info("Creating rating");
-            logger.info(baseURL);
             Object rating1 = rating == null ? Rating.generate() : rating;
             logger.info(rating1.toString());
             restTemplate.postForObject(baseURL, rating1, Rating.class);

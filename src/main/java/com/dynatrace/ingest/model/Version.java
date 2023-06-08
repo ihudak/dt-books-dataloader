@@ -34,6 +34,14 @@ public class Version {
         this.message = message;
     }
 
+    public Version(String serviceId, String message) {
+        this.serviceId = serviceId;
+        this.message   = message;
+        this.ver = "N/A";
+        this.date = "N/A";
+        this.status = "N/A";
+    }
+
     public String getServiceId() {
         return serviceId;
     }
@@ -52,6 +60,10 @@ public class Version {
 
     public String getMessage() {
         return message;
+    }
+
+    public boolean isMessageEmpty() {
+        return this.message == null || this.message.isEmpty();
     }
 
     public void setMessage(String message) {

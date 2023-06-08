@@ -1,8 +1,10 @@
 package com.dynatrace.ingest.repository;
 
 import com.dynatrace.ingest.model.Client;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -41,9 +43,9 @@ public class ClientRepository implements IngestRepository {
     public void create(@Nullable Object client) {
         logger.info("Creating Clients");
         logger.info(baseURL);
+        Object client0 = client == null ? Client.generate() : client;
+        logger.info(client0.toString());
         try {
-            Object client0 = client == null ? Client.generate() : client;
-            logger.info(client0.toString());
             Object client1 = restTemplate.postForObject(baseURL, client0, Client.class);
             logger.info("Resulting Client " + client1.toString());
         } catch (Exception exception) {

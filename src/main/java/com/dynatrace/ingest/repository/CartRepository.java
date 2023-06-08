@@ -3,6 +3,7 @@ package com.dynatrace.ingest.repository;
 import com.dynatrace.ingest.model.Cart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
